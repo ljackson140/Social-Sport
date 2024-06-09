@@ -1,0 +1,6 @@
+@Social.Sport.API_HostAddress = http://localhost:5252
+
+GET {{Social.Sport.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
