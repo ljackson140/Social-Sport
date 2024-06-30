@@ -1,5 +1,6 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Social.Sport.API.Helper;
 using Social.Sport.Core.Entities;
@@ -14,25 +15,51 @@ namespace Social.Sport.Core.Services
         {
         }
 
-        public Task<Result<Team>> AddAsync(Team Team, CancellationToken cancellationToken)
+        public async Task<Result<Team>> AddAsync(Team team, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            if (team == null) throw new ArgumentNullException(nameof(Team));
+
+            _unitOfWork.Teams.AddAsync(team, cancellationToken);
+            await _unitOfWork.SaveChanges();
+            return new SuccessResult<Team>(team);
         }
 
-        public Task<Result<Team>> DeleteAsync(Team TeamId, CancellationToken cancellationToken)
+        public async Task<Result<Team>> UpdateAsync(Team updateTeam, Guid teamId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var existingTeam = await _unitOfWork.Teams.Get().FirstOrDefaultAsync(x => x.Id == teamId, cancellationToken);
+
+            if (existingTeam is null)
+            {
+                return new ErrorResult<Team>("shit is null dawg");
+            }
+            existingTeam!.TeamName = updateTeam.TeamName;
+            existingTeam.TeamDescription = updateTeam.TeamDescription;
+            existingTeam.TeamCaptain = updateTeam.TeamCaptain;
+            existingTeam.UpdatedDate = DateTime.UtcNow;
+            await _unitOfWork.SaveChanges();
+            return new SuccessResult<Team>(existingTeam);
         }
 
-        public Task<Result<IList<Team>>> GetAllAsync(Team Team, CancellationToken cancellationToken)
+        public async Task<Result<Team>> DeleteAsync(Guid teamId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var deleteTeam = await _unitOfWork.Teams.Get().FirstOrDefaultAsync(x => x.Id == teamId);
+            if (deleteTeam == null) return new ErrorResult<Team>("Team couldnt be deleted");
+            _unitOfWork.Teams.Remove(deleteTeam);
+            await _unitOfWork.SaveChanges();
+            return new SuccessResult<Team>(deleteTeam);
+
         }
 
-        public Task<Result<Team>> UpdateAsync(Team Team, CancellationToken cancellationToken)
+        public async Task<Result<IList<Team>>> GetAllAsync(CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            var teams = await _unitOfWork.Teams.Get()
+                .Include(x => x.TeamName)
+                .Include(x => x.TeamDescription)
+                .Include(x => x.TeamCaptain)
+                .Include(x => x.TeamMax)
+                .Include(x => x.Users.Count())
+                .ToListAsync(cancellationToken);
+            return new SuccessResult<IList<Team>>(teams);
         }
-
     }
 }

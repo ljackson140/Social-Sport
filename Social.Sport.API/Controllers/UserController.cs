@@ -6,7 +6,7 @@ using Social.Sport.Core.Interfaces.Services;
 namespace Social.Sport.API.Controllers
 {
 
-    [Route("api/users")]
+    [Route("api/user")]
     [ApiController]
     [ServiceFilter(typeof(ValidationFilterAttribute))]
     public class UserController : BaseController
