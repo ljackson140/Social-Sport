@@ -44,7 +44,7 @@ namespace Social.Sport.Infrastructure
                         ValidIssuer = configuration[AuthenticateTokenMessages.Issuer],
                         ValidAudience = configuration[AuthenticateTokenMessages.Audience],
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(configuration[AuthenticateTokenMessages.SecretKey]))
+                            Encoding.ASCII.GetBytes(configuration[AuthenticateTokenMessages.SecretKey]!))
                     };
                 });
             return services;
