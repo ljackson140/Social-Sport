@@ -29,7 +29,7 @@ namespace Social.Sport.Core.Services
             }
         }
 
-        public async Task<Result<User>> UnitUserAsync(int userId, CancellationToken cancellationToken)
+        public async Task<Result<User>> UnitUserAsync(Guid userId, CancellationToken cancellationToken)
         {
             var users = await _unitOfWork.Users.Get().ToListAsync(cancellationToken);
             var user = users.FirstOrDefault(x => x.Id == userId);
