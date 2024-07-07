@@ -31,7 +31,7 @@ namespace Social.Sport.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration) 
+        public static IServiceCollection AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthentication(AuthenticateTokenMessages.HoldKey)
                 .AddJwtBearer(options =>
@@ -44,7 +44,7 @@ namespace Social.Sport.Infrastructure
                         ValidIssuer = configuration[AuthenticateTokenMessages.Issuer],
                         ValidAudience = configuration[AuthenticateTokenMessages.Audience],
                         IssuerSigningKey = new SymmetricSecurityKey(
-                            Encoding.ASCII.GetBytes(configuration[AuthenticateTokenMessages.SecretKey]!))
+                            Encoding.ASCII.GetBytes(configuration[AuthenticateTokenMessages.SecretKey]))
                     };
                 });
             return services;
