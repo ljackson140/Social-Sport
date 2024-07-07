@@ -1,6 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Social.Sport.API.Helper;
 using Social.Sport.API.Middlewares;
+using Social.Sport.Core.DTOs.Request;
+using Social.Sport.Core.DTOs.Response;
+using Social.Sport.Core.Entities;
 using Social.Sport.Core.Interfaces.Services;
 using System.Net;
 
@@ -23,13 +27,19 @@ namespace Social.Sport.API.Controllers
         {
             var getAllTeams = await _teamService.GetAllAsync(ct);
             if (!getAllTeams.Success) return Error(getAllTeams, HttpStatusCode.BadRequest);
-            return Ok(getAllTeams);
+            var listOfAllTeams = _mapper.Map<List<TeamResponse>>(getAllTeams);
+            return Ok(new SuccessResult<List<TeamResponse>>(listOfAllTeams));
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> AddAsync([FromBody] teamRequestDTO data, CancellationToken ct)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] TeamRequest request, CancellationToken ct)
+        {
+            var team = _mapper.Map<Team>(request);
+            var postTeam = await _teamService.AddAsync(team, ct);
+            if (!postTeam.Success) return Error(postTeam, HttpStatusCode.BadRequest);
+            var mapTeam = _mapper.Map<TeamResponse>(postTeam);
+            return Ok(new SuccessResult<TeamResponse>(mapTeam));
 
-        //}
+        }
     }
 }
