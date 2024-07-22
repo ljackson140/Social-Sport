@@ -6,7 +6,7 @@ using Social.Sport.API.Helper;
 
 namespace Social.Sport.API.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public abstract class BaseController : ControllerBase
     {
         protected readonly IMapper _mapper;
