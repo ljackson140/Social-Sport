@@ -27,7 +27,7 @@ namespace Social.Sport.API.Controllers
         {
             var getAllTeams = await _teamService.GetAllAsync(ct);
             if (!getAllTeams.Success) return Error(getAllTeams, HttpStatusCode.BadRequest);
-            var listOfAllTeams = _mapper.Map<List<TeamResponse>>(getAllTeams);
+            var listOfAllTeams = _mapper.Map<List<TeamResponse>>(getAllTeams.Data);
             return Ok(new SuccessResult<List<TeamResponse>>(listOfAllTeams));
         }
 

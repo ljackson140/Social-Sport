@@ -52,13 +52,7 @@ namespace Social.Sport.Core.Services
 
         public async Task<Result<IList<Team>>> GetAllAsync(CancellationToken cancellationToken)
         {
-            var teams = await _unitOfWork.Teams.Get()
-                .Include(x => x.TeamName)
-                .Include(x => x.TeamDescription)
-                .Include(x => x.TeamCaptain)
-                .Include(x => x.TeamMax)
-                .Include(x => x.Users.Count())
-                .ToListAsync(cancellationToken);
+            var teams = await _unitOfWork.Teams.Get().ToListAsync(cancellationToken);
             return new SuccessResult<IList<Team>>(teams);
         }
     }
