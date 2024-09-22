@@ -37,7 +37,7 @@ namespace Social.Sport.API.Controllers
             var team = _mapper.Map<Team>(request);
             var postTeam = await _teamService.AddAsync(team, ct);
             if (!postTeam.Success) return Error(postTeam, HttpStatusCode.BadRequest);
-            var mapTeam = _mapper.Map<TeamResponse>(postTeam);
+            var mapTeam = _mapper.Map<TeamResponse>(postTeam.Data);
             return Ok(new SuccessResult<TeamResponse>(mapTeam));
 
         }
