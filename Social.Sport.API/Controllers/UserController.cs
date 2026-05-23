@@ -1,7 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Social.Sport.API.Helper;
 using Social.Sport.API.Middlewares;
+using Social.Sport.Core.DTOs.Request;
+using Social.Sport.Core.DTOs.Response;
+using Social.Sport.Core.Entities;
 using Social.Sport.Core.Interfaces.Services;
+using System.Net;
 
 namespace Social.Sport.API.Controllers
 {
@@ -20,6 +25,16 @@ namespace Social.Sport.API.Controllers
             _authenticateTokenService = authenticateTokenService;
             _signUpInfoService = signupInfo;
             _userService = userService;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAsync([FromBody] UserRequest request, CancellationToken ct)
+        {
+            var user = _mapper.Map<User>(request);
+            var postUser = await _signUpInfoService.SignUpAsync(user, ct);
+            if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
+            var mapUser = _mapper.Map<UserResponse>(postUser.Data);
+            return Ok(new SuccessResult<UserResponse>(mapUser));
         }
     }
 }

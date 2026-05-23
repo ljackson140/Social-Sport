@@ -25,6 +25,7 @@ namespace Social.Sport.Infrastructure
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(ISignUpInfoService), typeof(SignUpInfoService));
             services.AddScoped(typeof(ITeamService), typeof(TeamService));
+            services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped<ILogService, LogService>(
                     serviceProvider => new LogService(
                         options: serviceProvider.GetRequiredService<IOptions<TelemetryConfiguration>>())

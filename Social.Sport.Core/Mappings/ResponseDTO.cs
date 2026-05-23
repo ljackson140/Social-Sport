@@ -13,6 +13,16 @@ namespace Social.Sport.Core.Mappings
                 .ForMember(dest => dest.TeamCaptain, opt => opt.MapFrom(src => src.TeamCaptain))
                 .ForMember(dest => dest.TeamName, opt => opt.MapFrom(src => src.TeamName))
                 .ForMember(dest => dest.TeamDescription, opt => opt.MapFrom(src => src.TeamDescription));
+
+            CreateMap<User, UserResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.LastName))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.Username))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email))
+                .ForMember(dest => dest.PhoneNumber, opt => opt.MapFrom(src => src.phoneNumber))
+                .ForMember(dest => dest.DOB, opt => opt.MapFrom(src => src.DOB))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.Role));
         }
     }
 }
