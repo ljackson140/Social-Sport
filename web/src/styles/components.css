@@ -1,0 +1,73 @@
+/* Responsive utilities */
+@media (max-width: 1024px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden-tablet {
+    display: none !important;
+  }
+
+  .search-bar {
+    flex-direction: column !important;
+  }
+
+  .search-bar > div,
+  .search-bar > button {
+    border-right: none !important;
+    border-bottom: 2px solid var(--on-surface) !important;
+  }
+
+  .search-bar > button {
+    border-bottom: none !important;
+  }
+}
+
+/* Button interactions */
+.button-action {
+  transition: all 0.3s ease;
+}
+
+.button-action:hover {
+  background-color: var(--primary-container) !important;
+  color: var(--on-surface) !important;
+}
+
+/* Card Hover Effects */
+.card-hover-effect:hover {
+  box-shadow: 6px 6px 0px 0px var(--on-surface);
+  transform: translate(-2px, -2px);
+}
+
+/* Icon Box Effects */
+.icon-box {
+  cursor: pointer;
+}
+
+.value-prop-item:hover .icon-box {
+  transform: translate(4px, 4px);
+}
+
+/* Text Selection */
+::selection {
+  background-color: var(--primary-container);
+  color: var(--on-primary-container);
+}
+
+/* Animation for smooth transitions */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
