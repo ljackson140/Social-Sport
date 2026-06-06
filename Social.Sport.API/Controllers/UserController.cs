@@ -33,8 +33,16 @@ namespace Social.Sport.API.Controllers
             var user = _mapper.Map<User>(request);
             var postUser = await _signUpInfoService.SignUpAsync(user, ct);
             if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
-            var mapUser = _mapper.Map<UserResponse>(postUser.Data);
-            return Ok(new SuccessResult<UserResponse>(mapUser));
+
+            var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
+            if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
+
+            var response = new
+            {
+                user = _mapper.Map<UserResponse>(postUser.Data),
+                accessToken = authResult.Data.AccessToken
+            };
+            return Ok(new SuccessResult<dynamic>(response));
         }
     }
 }
