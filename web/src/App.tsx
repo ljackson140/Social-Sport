@@ -1,5 +1,5 @@
 import { Theme } from '@radix-ui/themes'
-import HomePage from './pages/HomePage'
+import Router from './router'
 import '@radix-ui/themes/styles.css'
 import './App.css'
 
@@ -11,7 +11,7 @@ function App() {
       radius="medium"
       scaling="100%"
     >
-      <HomePage />
+      <Router />
     </Theme>
   )
 }
