@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Using Include="Social.Sport.Core.Entities.Sport" Alias="SportEntity" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.22.0" />

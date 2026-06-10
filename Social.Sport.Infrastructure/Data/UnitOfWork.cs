@@ -17,6 +17,56 @@ namespace Social.Sport.Infrastructure.Data
             get => new Repository<Team>(Context);
         }
 
+        public IRepository<Core.Entities.Sport> Sports
+        {
+            get => new Repository<Core.Entities.Sport>(Context);
+        }
+
+        public IRepository<Venue> Venue
+        {
+            get => new Repository<Venue>(Context);
+        }
+
+        public IRepository<Game> Games
+        {
+            get => new Repository<Game>(Context);
+        }
+
+        public IRepository<GameParticipant> GameParticipants
+        {
+            get => new Repository<GameParticipant>(Context);
+        }
+
+        public IRepository<GameScore> GameScores
+        {
+            get => new Repository<GameScore>(Context);
+        }
+
+        public IRepository<UserRating> UserRatings
+        {
+            get => new Repository<UserRating>(Context);
+        }
+
+        public IRepository<Tournament> Tournaments
+        {
+            get => new Repository<Tournament>(Context);
+        }
+
+        public IRepository<League> Leagues
+        {
+            get => new Repository<League>(Context);
+        }
+
+        public IRepository<Notification> Notifications
+        {
+            get => new Repository<Notification>(Context);
+        }
+
+        public IRepository<Report> Reports
+        {
+            get => new Repository<Report>(Context);
+        }
+
         public UnitOfWork(AppDbContext context) 
         { 
             Context = context;

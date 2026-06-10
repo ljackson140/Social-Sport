@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Social.Sport.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Social.Sport.Infrastructure.Configurations
 {
@@ -25,9 +20,26 @@ namespace Social.Sport.Infrastructure.Configurations
             builder.Property(x => x.phoneNumber).HasMaxLength(10);
             builder.Property(x => x.TeamId);
             builder.Property(x => x.isActive).HasConversion<string>();
+            builder.Property(x => x.IsVerified).IsRequired();
+            builder.Property(x => x.SportsPreference).HasMaxLength(500);
 
             builder.HasMany(x => x.Teams)
                 .WithMany(x => x.Users);
+
+            builder.HasMany(x => x.GameParticipations)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(x => x.RatingsGiven)
+                .WithOne(x => x.Rater)
+                .HasForeignKey(x => x.RaterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasMany(x => x.RatingsReceived)
+                .WithOne(x => x.RatedUser)
+                .HasForeignKey(x => x.RatedUserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             base.Configure(builder);
         }
