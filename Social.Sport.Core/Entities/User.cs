@@ -21,6 +21,7 @@
 
         // Navigation properties
         public ICollection<Team> Teams { get; set; }
+        public ICollection<Team> OwnedTeams { get; set; }
         public ICollection<Game> OrganizedGames { get; set; }
         public ICollection<GameParticipant> GameParticipations { get; set; }
         public ICollection<UserRating> RatingsGiven { get; set; }
