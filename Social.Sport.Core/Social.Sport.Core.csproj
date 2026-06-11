@@ -12,6 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.11" />
     <Using Include="Social.Sport.Core.Entities.Sport" Alias="SportEntity" />
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.10.4" />

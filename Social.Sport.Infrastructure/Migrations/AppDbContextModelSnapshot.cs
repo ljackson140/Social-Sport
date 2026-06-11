@@ -674,12 +674,12 @@ namespace Social.Sport.Infrastructure.Migrations
                     b.HasOne("Social.Sport.Core.Entities.Team", "TeamA")
                         .WithMany("TeamAGames")
                         .HasForeignKey("TeamAId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Social.Sport.Core.Entities.Team", "TeamB")
                         .WithMany("TeamBGames")
                         .HasForeignKey("TeamBId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Social.Sport.Core.Entities.Venue", "Venue")
                         .WithMany("Games")

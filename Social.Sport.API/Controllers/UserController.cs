@@ -28,19 +28,35 @@ namespace Social.Sport.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAsync([FromBody] UserRequest request, CancellationToken ct)
+        public async Task<IActionResult> SignUpAsync([FromBody] UserRequest request, CancellationToken ct)
         {
             var user = _mapper.Map<User>(request);
             var postUser = await _signUpInfoService.SignUpAsync(user, ct);
             if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
 
-            var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
-            if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
+            //var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
+            //if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
 
             var response = new
             {
-                user = _mapper.Map<UserResponse>(postUser.Data),
-                accessToken = authResult.Data.AccessToken
+                user = _mapper.Map<UserResponse>(postUser.Data)
+            };
+            return Ok(new SuccessResult<dynamic>(response));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LoginAsync([FromBody] UserRequest request, CancellationToken ct)
+        {
+            var user = _mapper.Map<User>(request);
+            var postUser = await _signUpInfoService.SignUpAsync(user, ct);
+            if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
+
+            //var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
+            //if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
+
+            var response = new
+            {
+                user = _mapper.Map<UserResponse>(postUser.Data)
             };
             return Ok(new SuccessResult<dynamic>(response));
         }

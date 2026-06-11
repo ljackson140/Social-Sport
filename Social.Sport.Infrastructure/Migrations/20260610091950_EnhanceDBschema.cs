@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Social.Sport.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateDBSchema : Migration
+    public partial class EnhanceDBschema : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -226,14 +226,12 @@ namespace Social.Sport.Infrastructure.Migrations
                         name: "FK_Games_Teams_TeamAId",
                         column: x => x.TeamAId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Games_Teams_TeamBId",
                         column: x => x.TeamBId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.SetNull);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Games_Users_OrganizerId",
                         column: x => x.OrganizerId,

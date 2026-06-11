@@ -39,12 +39,12 @@ namespace Social.Sport.Infrastructure.Configurations
             builder.HasOne(x => x.TeamA)
                 .WithMany(x => x.TeamAGames)
                 .HasForeignKey(x => x.TeamAId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(x => x.TeamB)
                 .WithMany(x => x.TeamBGames)
                 .HasForeignKey(x => x.TeamBId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasMany(x => x.Participants)
                 .WithOne(x => x.Game)

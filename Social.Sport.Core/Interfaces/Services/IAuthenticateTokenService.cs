@@ -6,5 +6,6 @@ namespace Social.Sport.Core.Interfaces.Services
     public interface IAuthenticateTokenService
     {
         Task<Result<UserAuthenticationTicket>> AuthenticateAsync(string email, string password, CancellationToken cancellationToken);
+        Task<Result<UserAuthenticationTicket>> LoginAsync(string email, string password, CancellationToken cancellationToken);
     }
 }

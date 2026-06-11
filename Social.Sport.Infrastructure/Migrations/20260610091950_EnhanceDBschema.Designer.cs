@@ -12,8 +12,8 @@ using Social.Sport.Infrastructure.Data;
 namespace Social.Sport.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260610065942_UpdateDBSchema")]
-    partial class UpdateDBSchema
+    [Migration("20260610091950_EnhanceDBschema")]
+    partial class EnhanceDBschema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -677,12 +677,12 @@ namespace Social.Sport.Infrastructure.Migrations
                     b.HasOne("Social.Sport.Core.Entities.Team", "TeamA")
                         .WithMany("TeamAGames")
                         .HasForeignKey("TeamAId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Social.Sport.Core.Entities.Team", "TeamB")
                         .WithMany("TeamBGames")
                         .HasForeignKey("TeamBId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Social.Sport.Core.Entities.Venue", "Venue")
                         .WithMany("Games")
