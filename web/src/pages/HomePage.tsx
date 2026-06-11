@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { isAuthenticated, logout } from '../services/auth'
+import { isAuthenticated } from '../services/auth'
 import { Box } from '@radix-ui/themes'
 import {
   TopNavBar,
@@ -40,21 +40,11 @@ export default function HomePage() {
     return null
   }
 
-  async function handleLogout() {
-    await logout()
-    navigate({ to: '/login' })
-  }
 
   return (
     <Box style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Navigation */}
       <TopNavBar />
-
-      <div style={{maxWidth:720,margin:'40px auto',padding:20}}>
-      <h1>Homepage</h1>
-      <p>Welcome — you are signed in.</p>
-      <button onClick={handleLogout}>Sign out</button>
-    </div>
 
       {/* Main Content */}
       <main style={{ width: '100%' }}>

@@ -1,9 +1,15 @@
 import { Box, Button, Flex, Link, Text } from '@radix-ui/themes'
 import { useNavigate } from '@tanstack/react-router'
 import '../styles/components.css'
+import { isAuthenticated, logout } from '../services/auth'
 
 export const TopNavBar = () => {
   const navigate = useNavigate()
+
+   async function handleLogout() {
+    await logout()
+    navigate({ to: '/login' })
+  }
 
   return (
     <Box
@@ -49,12 +55,20 @@ export const TopNavBar = () => {
         <Link href="#" style={{ color: 'var(--on-surface)', fontSize: '14px', fontWeight: '700', textTransform: 'uppercase' }}>How it Works</Link>
       </Flex>
 
-      {}
-      <Flex gap="2">
+      {isAuthenticated() ? (
         <Button
           variant="ghost"
           size="2"
-          onClick={() => navigate({ to: '/login' })}
+          onClick={handleLogout}
+        >
+          Sign out
+        </Button>
+      ) : (
+        <Flex gap="2">
+          <Button
+            variant="ghost"
+            size="2"
+            onClick={() => navigate({ to: '/login' })}
           style={{
             color: 'var(--on-surface)',
             fontSize: '14px',
@@ -84,6 +98,7 @@ export const TopNavBar = () => {
           Sign Up
         </Button>
       </Flex>
+      )}
     </Box>
   )
 }
