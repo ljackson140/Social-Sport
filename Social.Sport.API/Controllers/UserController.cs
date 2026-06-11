@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Social.Sport.API.Helper;
 using Social.Sport.API.Middlewares;
@@ -18,25 +19,26 @@ namespace Social.Sport.API.Controllers
     {
         private readonly IAuthenticateTokenService _authenticateTokenService;
         private readonly ISignUpInfoService _signUpInfoService;
-        private readonly IUserService _userService;
+        private readonly ICurrentUserService _currentUserService;
 
-        public UserController(IMapper mapper, IAuthenticateTokenService authenticateTokenService, ISignUpInfoService signupInfo, IUserService userService) : base(mapper)
+        public UserController(
+            IMapper mapper,
+            IAuthenticateTokenService authenticateTokenService,
+            ISignUpInfoService signupInfo,
+            ICurrentUserService currentUserService) : base(mapper)
         {
             _authenticateTokenService = authenticateTokenService;
             _signUpInfoService = signupInfo;
-            _userService = userService;
+            _currentUserService = currentUserService;
         }
 
-        [HttpPost]
+        [HttpPost("signup")]
         public async Task<IActionResult> SignUpAsync([FromBody] UserRequest request, CancellationToken ct)
         {
             var user = _mapper.Map<User>(request);
             var postUser = await _signUpInfoService.SignUpAsync(user, ct);
             if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
 
-            //var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
-            //if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
-
             var response = new
             {
                 user = _mapper.Map<UserResponse>(postUser.Data)
@@ -44,21 +46,26 @@ namespace Social.Sport.API.Controllers
             return Ok(new SuccessResult<dynamic>(response));
         }
 
-        [HttpPost]
-        public async Task<IActionResult> LoginAsync([FromBody] UserRequest request, CancellationToken ct)
+        [HttpPost("login")]
+        public async Task<IActionResult> LoginAsync([FromBody] LoginRequest request, CancellationToken ct)
         {
-            var user = _mapper.Map<User>(request);
-            var postUser = await _signUpInfoService.SignUpAsync(user, ct);
-            if (!postUser.Success) return Error(postUser, HttpStatusCode.BadRequest);
+            var authResult = await _authenticateTokenService.LoginAsync(request.Email, request.Password, ct);
+            if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
 
-            //var authResult = await _authenticateTokenService.AuthenticateAsync(user.Email, user.Password, ct);
-            //if (!authResult.Success) return Error(authResult, HttpStatusCode.Unauthorized);
+            var response = _mapper.Map<AuthResponse>(authResult.Data);
+            return Ok(new SuccessResult<AuthResponse>(response));
+        }
 
-            var response = new
+        [Authorize]
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            if (_currentUserService.IsAuthenticated != true)
             {
-                user = _mapper.Map<UserResponse>(postUser.Data)
-            };
-            return Ok(new SuccessResult<dynamic>(response));
+                return Error("No authenticated user.", HttpStatusCode.Unauthorized);
+            }
+
+            return Ok(new SuccessResult<LogoutResponse>(new LogoutResponse()));
         }
     }
 }

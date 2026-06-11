@@ -1,7 +1,10 @@
 import { Box, Button, Flex, Link, Text } from '@radix-ui/themes'
+import { useNavigate } from '@tanstack/react-router'
 import '../styles/components.css'
 
 export const TopNavBar = () => {
+  const navigate = useNavigate()
+
   return (
     <Box
       style={{
@@ -46,11 +49,12 @@ export const TopNavBar = () => {
         <Link href="#" style={{ color: 'var(--on-surface)', fontSize: '14px', fontWeight: '700', textTransform: 'uppercase' }}>How it Works</Link>
       </Flex>
 
-      {/* Auth Buttons */}
+      {}
       <Flex gap="2">
         <Button
           variant="ghost"
           size="2"
+          onClick={() => navigate({ to: '/login' })}
           style={{
             color: 'var(--on-surface)',
             fontSize: '14px',
@@ -63,6 +67,7 @@ export const TopNavBar = () => {
         </Button>
         <Button
           size="2"
+          onClick={() => navigate({ to: '/signup' })}
           style={{
             backgroundColor: 'var(--on-surface)',
             color: 'var(--background)',

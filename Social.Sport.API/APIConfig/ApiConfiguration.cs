@@ -5,10 +5,10 @@
         public static IApplicationBuilder ConfigureCorsPolicy(this IApplicationBuilder app)
         {
             return app.UseCors(x => x
-            .WithOrigins("https://localhost:3000")
-            .AllowAnyOrigin()
+            .WithOrigins("http://localhost:3000", "https://localhost:3000")
             .AllowAnyMethod()
-            .AllowAnyHeader());
+            .AllowAnyHeader()
+            .AllowCredentials());
         }
     }
 }

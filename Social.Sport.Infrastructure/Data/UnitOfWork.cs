@@ -67,7 +67,7 @@ namespace Social.Sport.Infrastructure.Data
             get => new Repository<Report>(Context);
         }
 
-        public UnitOfWork(AppDbContext context) 
+        public UnitOfWork(AppDbContext context)
         { 
             Context = context;
         }

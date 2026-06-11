@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Social.Sport.Core.DTOs.Response;
 using Social.Sport.Core.Entities;
+using Social.Sport.Core.Entities.NotMapped;
 
 namespace Social.Sport.Core.Mappings
 {
@@ -8,6 +9,16 @@ namespace Social.Sport.Core.Mappings
     {
         public ResponseDTO()
         {
+            CreateMap<UserAuthenticationTicket, AuthResponse>()
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
+                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.User.Role.ToString()))
+                .ForMember(dest => dest.AccessToken, opt => opt.MapFrom(src => src.AccessToken))
+                .ForMember(dest => dest.TokenExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt));
+
             CreateMap<Team, TeamResponse>()
                 .ForMember(dest => dest.TeamMax, opt => opt.MapFrom(src => src.TeamMax))
                 .ForMember(dest => dest.TeamCaptain, opt => opt.MapFrom(src => src.TeamCaptain))

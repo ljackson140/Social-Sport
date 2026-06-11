@@ -1,22 +1,22 @@
 import { useState, type ChangeEvent } from 'react'
 import { useMutation } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { signupApi } from '../services/auth'
-import { SignupPayload } from '../data/request'
-import { TextField } from '@radix-ui/themes'
+import type { SignupPayload } from '../data/request'
+import { Button, TextField } from '@radix-ui/themes'
 
 const required = (value: string) => (!value ? 'This field is required' : undefined)
 
 export default function SignupPage() {
+  const navigate = useNavigate()
   const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
     mutationFn: (payload: SignupPayload) => signupApi(payload),
-    onSuccess: () => {
-      history.pushState({}, '', '/home')
-      window.dispatchEvent(new PopStateEvent('popstate'))
-    },
-    onError: (err: any) => {
+    // Signup doesn't issue a token, so send the user to the login page.
+    onSuccess: () => navigate({ to: '/login' }),
+    onError: (err: Error) => {
       setError(err?.message || 'Signup failed')
     },
   })
@@ -202,13 +202,13 @@ export default function SignupPage() {
           )}
         </Field>
 
-        <button type="submit" disabled={submitDisabled} style={{ width: '100%', padding: '10px 16px' }}>
+        <Button type="submit" disabled={submitDisabled} style={{ width: '100%' }}>
           {submitDisabled ? 'Sending...' : 'Create account'}
-        </button>
+        </Button>
       </form>
 
       <div style={{ marginTop: 12 }}>
-        <a href="/">Back to sign in</a>
+        <Link to="/login">Back to sign in</Link>
       </div>
     </div>
   )

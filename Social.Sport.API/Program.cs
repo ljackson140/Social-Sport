@@ -1,19 +1,16 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Social.Sport.API.APIConfig;
 using Social.Sport.API.Middlewares;
 using Social.Sport.Infrastructure;
 using Social.Sport.Infrastructure.Data;
 
-
 var builder = WebApplication.CreateBuilder(args);
-
-
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddCors();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

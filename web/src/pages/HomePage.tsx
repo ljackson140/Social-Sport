@@ -1,3 +1,5 @@
+import { useEffect } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { isAuthenticated, logout } from '../services/auth'
 import { Box } from '@radix-ui/themes'
 import {
@@ -11,6 +13,13 @@ import {
 } from '../components'
 
 export default function HomePage() {
+  const navigate = useNavigate()
+  const authed = isAuthenticated()
+
+  useEffect(() => {
+    if (!authed) navigate({ to: '/login' })
+  }, [authed, navigate])
+
   const handleSearch = (filters: { sport: string; location: string }) => {
     console.log('Search initiated:', filters)
   }
@@ -27,16 +36,13 @@ export default function HomePage() {
     console.log('Explore Sports clicked')
   }
 
-  if (!isAuthenticated()) {
-    history.pushState({}, '', '/')
-    window.dispatchEvent(new PopStateEvent('popstate'))
+  if (!authed) {
     return null
   }
 
-  function handleLogout() {
-    logout()
-    history.pushState({}, '', '/')
-    window.dispatchEvent(new PopStateEvent('popstate'))
+  async function handleLogout() {
+    await logout()
+    navigate({ to: '/login' })
   }
 
   return (

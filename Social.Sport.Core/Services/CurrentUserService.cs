@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Social.Sport.Core.Interfaces.Services;
 using System.Security.Claims;
+using static Social.Sport.Core.Constants.ConstantConfig;
 
 namespace Social.Sport.Core.Services
 {
@@ -13,18 +14,24 @@ namespace Social.Sport.Core.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public bool? IsAuthenticated => _httpContextAccessor?.HttpContext?.User?.Identity?.IsAuthenticated;
+        private ClaimsPrincipal? User => _httpContextAccessor?.HttpContext?.User;
 
-        public string UserName => _httpContextAccessor?.HttpContext?.User?.FindFirst(ClaimTypes.Name)?.Value;
+        public bool? IsAuthenticated => User?.Identity?.IsAuthenticated;
 
-        public string[]? Roles => _httpContextAccessor?.HttpContext?.User?.FindAll(ClaimTypes.Role)
+        public string UserName =>
+            User?.FindFirst(AuthenticateTokenMessages.userName)?.Value
+            ?? User?.FindFirst(ClaimTypes.GivenName)?.Value;
+
+        public string[]? Roles => User?.FindAll(ClaimTypes.Role)
             .Select(c => c.Value)
             .ToArray();
 
         public Guid GetCurrentUserId()
         {
-            var userIdClaim = _httpContextAccessor?.HttpContext?.User
-                ?.FindFirst("userId")?.Value;
+            
+            var userIdClaim =
+                User?.FindFirst(AuthenticateTokenMessages.userId)?.Value
+                ?? User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return Guid.TryParse(userIdClaim, out var userId) ? userId : Guid.Empty;
         }

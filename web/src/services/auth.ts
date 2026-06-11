@@ -1,35 +1,42 @@
-import { SignupPayload } from "../data/request"
+import { apiFetch, clearToken, getToken, setToken } from './apiClient'
+import type {
+  AuthResponse,
+  LoginPayload,
+  SignupPayload,
+  UserResponse,
+} from '../data/request'
 
-const TOKEN_KEY = 'ss_token'
 
-
-async function parseJsonSafe(res: Response) {
-  const txt = await res.text()
-  try { return JSON.parse(txt) } catch { return txt }
-}
-
-export async function signupApi(payload: SignupPayload) {
-  const res = await fetch('/api/user', {
+export async function signupApi(payload: SignupPayload): Promise<{ user: UserResponse }> {
+  return apiFetch<{ user: UserResponse }>('/user/signup', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
+    body: payload,
   })
-  const body = await parseJsonSafe(res)
-  if (!res.ok) {
-    const message = body?.message || (typeof body === 'string' ? body : 'Signup failed')
-    throw new Error(message)
-  }
-  // backend wraps result in { success:true, data: { user, accessToken } }
-  const token = body?.data?.accessToken
-  if (!token) throw new Error('No access token returned from server')
-  localStorage.setItem(TOKEN_KEY, token)
-  return body.data
 }
 
-export function logout() {
-  localStorage.removeItem(TOKEN_KEY)
+
+export async function loginApi(payload: LoginPayload): Promise<AuthResponse> {
+  const auth = await apiFetch<AuthResponse>('/user/login', {
+    method: 'POST',
+    body: payload,
+  })
+  if (!auth?.accessToken) {
+    throw new Error('No access token returned from server')
+  }
+  setToken(auth.accessToken)
+  return auth
+}
+
+export async function logout() {
+  try {
+    await apiFetch('/user/logout', { method: 'POST' })
+  } catch {
+    // Ignore errors - we want to clear the token and log out the user even if the API call fails
+  } finally {
+    clearToken()
+  }
 }
 
 export function isAuthenticated() {
-  return !!localStorage.getItem(TOKEN_KEY)
+  return !!getToken()
 }

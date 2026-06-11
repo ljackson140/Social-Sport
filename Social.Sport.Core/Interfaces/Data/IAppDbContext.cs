@@ -16,6 +16,6 @@ namespace Social.Sport.Core.Interfaces.Data
         DbSet<Tournament> Tournaments { get; }
         DbSet<League> Leagues { get; }
         DbSet<Notification> Notifications { get; }
-        DbSet<Report> Reports { get; }        
+        DbSet<Report> Reports { get; }
     }
 }

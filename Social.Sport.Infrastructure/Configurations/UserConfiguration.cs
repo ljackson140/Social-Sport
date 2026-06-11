@@ -17,7 +17,7 @@ namespace Social.Sport.Infrastructure.Configurations
             builder.Property(x => x.salt).IsRequired(false);
             builder.Property(x => x.Role);
             builder.Property(x => x.DOB).IsRequired();
-            builder.Property(x => x.phoneNumber).HasMaxLength(10);
+            builder.Property(x => x.phoneNumber).HasMaxLength(20);
             builder.Property(x => x.TeamId);
             builder.Property(x => x.isActive).HasConversion<string>();
             builder.Property(x => x.IsVerified).IsRequired();
