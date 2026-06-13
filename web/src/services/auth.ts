@@ -37,6 +37,11 @@ export async function logout() {
   }
 }
 
+
+export async function getCurrentUser(): Promise<UserResponse> {
+  return apiFetch<UserResponse>('/user/me')
+}
+
 export function isAuthenticated() {
   return !!getToken()
 }

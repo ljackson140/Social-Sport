@@ -20,16 +20,19 @@ namespace Social.Sport.API.Controllers
         private readonly IAuthenticateTokenService _authenticateTokenService;
         private readonly ISignUpInfoService _signUpInfoService;
         private readonly ICurrentUserService _currentUserService;
+        private readonly IUserService _userService;
 
         public UserController(
             IMapper mapper,
             IAuthenticateTokenService authenticateTokenService,
             ISignUpInfoService signupInfo,
-            ICurrentUserService currentUserService) : base(mapper)
+            ICurrentUserService currentUserService,
+            IUserService userService) : base(mapper)
         {
             _authenticateTokenService = authenticateTokenService;
             _signUpInfoService = signupInfo;
             _currentUserService = currentUserService;
+            _userService = userService;
         }
 
         [HttpPost("signup")]
@@ -54,6 +57,23 @@ namespace Social.Sport.API.Controllers
 
             var response = _mapper.Map<AuthResponse>(authResult.Data);
             return Ok(new SuccessResult<AuthResponse>(response));
+        }
+
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> MeAsync(CancellationToken ct)
+        {
+            var userId = _currentUserService.GetCurrentUserId();
+            if (userId == Guid.Empty)
+            {
+                return Error("No authenticated user.", HttpStatusCode.Unauthorized);
+            }
+
+            var result = await _userService.GetByIdAsync(userId, ct);
+            if (!result.Success) return Error(result, HttpStatusCode.NotFound);
+
+            var response = _mapper.Map<UserResponse>(result.Data);
+            return Ok(new SuccessResult<UserResponse>(response));
         }
 
         [Authorize]

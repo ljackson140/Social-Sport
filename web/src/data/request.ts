@@ -27,12 +27,7 @@ export interface UserResponse {
 
 /** Mirrors the API's AuthResponse returned by the login endpoint. */
 export interface AuthResponse {
-  userId: string
-  firstName: string
-  lastName: string
-  email: string
-  username: string
-  role: string
   accessToken: string
   tokenExpiresAt: string
+  user: UserResponse
 }

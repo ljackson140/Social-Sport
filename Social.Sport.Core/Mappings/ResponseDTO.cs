@@ -10,14 +10,9 @@ namespace Social.Sport.Core.Mappings
         public ResponseDTO()
         {
             CreateMap<UserAuthenticationTicket, AuthResponse>()
-                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
-                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
-                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
-                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
-                .ForMember(dest => dest.Username, opt => opt.MapFrom(src => src.User.Username))
-                .ForMember(dest => dest.Role, opt => opt.MapFrom(src => src.User.Role.ToString()))
                 .ForMember(dest => dest.AccessToken, opt => opt.MapFrom(src => src.AccessToken))
-                .ForMember(dest => dest.TokenExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt));
+                .ForMember(dest => dest.TokenExpiresAt, opt => opt.MapFrom(src => src.ExpiresAt))
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
 
             CreateMap<Team, TeamResponse>()
                 .ForMember(dest => dest.TeamMax, opt => opt.MapFrom(src => src.TeamMax))

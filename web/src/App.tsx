@@ -1,5 +1,6 @@
 import { Theme } from '@radix-ui/themes'
 import Router from './router'
+import { AuthProvider } from './providers/authProvider'
 import '@radix-ui/themes/styles.css'
 import './App.css'
 
@@ -11,7 +12,9 @@ function App() {
       radius="medium"
       scaling="100%"
     >
-      <Router />
+      <AuthProvider>
+        <Router />
+      </AuthProvider>
     </Theme>
   )
 }

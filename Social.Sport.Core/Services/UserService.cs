@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Social.Sport.API.Helper;
 using Social.Sport.Core.Entities;
 using Social.Sport.Core.Interfaces.Data;
@@ -16,6 +17,19 @@ namespace Social.Sport.Core.Services
         {
             _unitOfWork.Users.AddAsync(user, cancellationToken);
             await _unitOfWork.SaveChanges();
+            return new SuccessResult<User>(user);
+        }
+
+        public async Task<Result<User>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        {
+            var user = await _unitOfWork.Users.Get()
+                .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            if (user == null)
+            {
+                return new ErrorResult<User>("User not found.");
+            }
+
             return new SuccessResult<User>(user);
         }
 
