@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate } from '@tanstack/react-router'
-import { isAuthenticated } from '../services/auth'
+import { useAuth } from '../context/authContext'
 import { Box } from '@radix-ui/themes'
 import {
   TopNavBar,
@@ -14,11 +14,11 @@ import {
 
 export default function HomePage() {
   const navigate = useNavigate()
-  const authed = isAuthenticated()
+  const { isAuthenticated, isLoading } = useAuth()
 
   useEffect(() => {
-    if (!authed) navigate({ to: '/login' })
-  }, [authed, navigate])
+    if (!isLoading && !isAuthenticated) navigate({ to: '/login' })
+  }, [isAuthenticated, isLoading, navigate])
 
   const handleSearch = (filters: { sport: string; location: string }) => {
     console.log('Search initiated:', filters)
@@ -36,7 +36,7 @@ export default function HomePage() {
     console.log('Explore Sports clicked')
   }
 
-  if (!authed) {
+  if (!isAuthenticated) {
     return null
   }
 

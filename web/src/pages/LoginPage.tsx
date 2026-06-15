@@ -3,17 +3,18 @@ import { useMutation } from '@tanstack/react-query'
 import { useForm } from '@tanstack/react-form'
 import { Link, useNavigate } from '@tanstack/react-router'
 import { Button, TextField } from '@radix-ui/themes'
-import { loginApi } from '../services/auth'
+import { useAuth } from '../context/authContext'
 import type { LoginPayload } from '../data/request'
 
 const required = (value: string) => (!value ? 'This field is required' : undefined)
 
 export default function LoginPage() {
   const navigate = useNavigate()
+  const { login } = useAuth()
   const [error, setError] = useState<string | null>(null)
 
   const mutation = useMutation({
-    mutationFn: (payload: LoginPayload) => loginApi(payload),
+    mutationFn: (payload: LoginPayload) => login(payload),
     onSuccess: () => navigate({ to: '/home' }),
     onError: (err: Error) => setError(err.message || 'Login failed'),
   })
